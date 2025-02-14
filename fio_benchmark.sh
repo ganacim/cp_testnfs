@@ -88,7 +88,7 @@ run_fio() {
     local rw_mode=$2
     local bs=$3
     local mix=$4
-    local output_file="$OUTPUT_DIR/${PREFIX}${test_name}.txt"
+    local output_file="$OUTPUT_DIR/${test_name}.txt"
 
     echo "Running $test_name test on $TEST_DIR..."
     
@@ -102,16 +102,17 @@ run_fio() {
         --runtime="$RUNTIME" \
         --direct="$DIRECT_IO" \
         --rwmixread="$mix" \
+        --output-format=json \
         --group_reporting | tee "$output_file"
 
     echo "Results saved in $output_file"
 }
 
 # Run tests
-run_fio "${PREFIX}seq_write" "write" "$BLOCK_SIZE" "0"
-run_fio "${PREFIX}seq_read" "read" "$BLOCK_SIZE" "100"
-run_fio "${PREFIX}rand_write" "randwrite" "$RAND_BLOCK_SIZE" "0"
-run_fio "${PREFIX}rand_read" "randread" "$RAND_BLOCK_SIZE" "100"
-run_fio "${PREFIX}mixed_rw" "randrw" "$BLOCK_SIZE" "70"  # 70% reads, 30% writes
+run_fio "${PREFIX}_seq_write" "write" "$BLOCK_SIZE" "0"
+run_fio "${PREFIX}_seq_read" "read" "$BLOCK_SIZE" "100"
+run_fio "${PREFIX}_rand_write" "randwrite" "$RAND_BLOCK_SIZE" "0"
+run_fio "${PREFIX}_rand_read" "randread" "$RAND_BLOCK_SIZE" "100"
+run_fio "${PREFIX}_mixed_rw" "randrw" "$BLOCK_SIZE" "70"  # 70% reads, 30% writes
 
 echo "Benchmarking complete. Results are stored in $OUTPUT_DIR"

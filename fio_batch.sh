@@ -26,19 +26,16 @@ FILE_SIZES=("1G" "5G" "10G")
 
 # Define other parameters
 OUTPUT_DIR="./results"
-TEST_DIR="/mnt/test"
-RUNTIME=60
+TEST_DIR="."
+RUNTIME=90
 DIRECT_IO=1
-
-# Export variables to be used by fio_benchmark.sh
-export OUTPUT_DIR TEST_DIR PREFIX RUNTIME DIRECT_IO
 
 # Loop through each combination of parameters
 for BLOCK_SIZE in "${BLOCK_SIZES[@]}"; do
     for JOBS in "${JOB_COUNTS[@]}"; do
         for TEST_SIZE in "${FILE_SIZES[@]}"; do
-            export BLOCK_SIZE JOBS TEST_SIZE
-            ./fio_benchmark.sh
+            TEST_PREFIX="${PREFIX}_bs${BLOCK_SIZE}_jobs${JOBS}_size${TEST_SIZE}"
+            ./fio_benchmark.sh --dir "$TEST_DIR" --out "$OUTPUT_DIR" --prefix "$TEST_PREFIX" --size "$TEST_SIZE" --bs "$BLOCK_SIZE" --jobs "$JOBS" --runtime "$RUNTIME" --direct "$DIRECT_IO"
         done
     done
 done
