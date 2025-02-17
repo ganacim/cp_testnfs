@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Default values
-SERVER_PORT=50000
+SERVER_PORT=50001
 USE_UDP=false
 
 # Help function

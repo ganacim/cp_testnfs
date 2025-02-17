@@ -91,7 +91,13 @@ run_fio() {
     local output_file="$OUTPUT_DIR/${test_name}.txt"
 
     echo "Running $test_name test on $TEST_DIR..."
-    
+
+    # test if output file exists and is not empty before running fio
+    if [ -s "$output_file" ]; then
+        echo "Output file $output_file already exists and is not empty. Skipping test."
+        return
+    fi
+
     fio --name="$test_name" \
         --directory="$TEST_DIR" \
         --ioengine=libaio \
